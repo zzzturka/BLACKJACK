@@ -1,0 +1,119 @@
+import random
+deck_values = [11,2,3,4,5,6,7,8,9,10,10,10]
+deck_cards = ["A", '2', '3', '4', '5', '6', '7', '8', '9', 'J', 'Q','K']
+continue_game = True
+dealer_game = True
+player_cards = []
+dealer_cards = []
+
+def deal():
+  card_index = random.randrange(len(deck_values))
+  dealed_score = deck_values[card_index]
+  dealed_card = deck_cards[card_index]
+  return [dealed_score, dealed_card]
+
+dealer_cards = deal() + deal()
+player_cards = deal() + deal()
+
+def check_player_score():
+  p_score = 0
+  for i in player_cards:
+    if  player_cards.index(i)%2 ==0:
+      p_score+= i
+    else: continue
+  return p_score
+
+def check_dealer_score():
+  d_score = 0
+  for i in dealer_cards:
+    if  dealer_cards.index(i)%2 ==0:
+      d_score+= i
+    else: continue
+  return d_score
+
+
+  
+
+print (player_cards)
+print ("Dealer has: ", dealer_cards[2], "[*]")
+
+while continue_game or check_player_score() < 21:
+  do_continue = input("Player's choice. Do you want to tap or pass?\n")
+  if check_player_score() == 21:
+      print ("BlackJack!")
+      print ("casino has these cards: ", dealer_cards, "let's see how it goes!")
+      continue_game = False
+      dealer_game = True
+  elif do_continue == "tap":
+    player_cards+= deal ()
+    print (player_cards)
+    check_player_score()
+    print (f"your points are: {check_player_score()}")
+    if check_player_score() > 21  and 11 in player_cards:
+      print (" but Ace is low!")
+      
+      ace_low = player_cards.index(11)
+      player_cards[ace_low] = 1
+      print(player_cards)
+      print (check_player_score())
+      continue
+
+    elif check_player_score() >21:
+      print ("casino wins!")
+      print ("casino had these cards: ", dealer_cards)
+      
+      continue_game = False
+      dealer_game = False
+    
+    else: continue
+  elif do_continue == "pass":
+    continue_game = False
+    print ("Hammer time!")
+    break
+  else: 
+    print ("Please try again")
+    continue
+  
+
+   
+
+
+while dealer_game:
+  
+  check_dealer_score()
+  
+  if check_dealer_score() > check_player_score() and  check_dealer_score() <= 21: 
+    print (dealer_cards)
+    print ("Casino Wins! Brutality")
+    dealer_game = False
+  elif check_dealer_score() < check_player_score() and check_dealer_score () <=21:
+      dealer_cards += deal()
+      check_dealer_score()
+  elif check_dealer_score() > 21  and 11 in dealer_cards:
+      print (" but Ace is low!")
+      
+      ace_low = dealer_cards.index(11)
+      dealer_cards[ace_low] = 1
+      print(dealer_cards)
+      print (check_dealer_score())
+      continue  
+  elif check_dealer_score() >21 and check_player_score() <= 21:
+    print("Player wins! Babality") 
+    print ("casino had these cards: ", dealer_cards)
+    dealer_game = False
+  elif check_dealer_score() == check_player_score():
+    print ("Its a draw!")
+    print ("casino had these cards: ", dealer_cards)
+    dealer_game = False
+  else: 
+    print (dealer_cards)
+    print ("casino wins")
+    dealer_game = False
+
+    
+      
+  
+  
+    
+
+  
